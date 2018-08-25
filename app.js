@@ -16,9 +16,18 @@ app.get('/', (req, res, next) => {
             <head>
                 <script type="text/javascript">
                     console.log('hello world!')
+                    function longPollForTime() {
+                        fetch('/the-time', { header: { 'Cache-Control': 'no-cache' } })
+                            .then(response => response.text())
+                            .then(time => {
+                                console.log('The time is: ' , time)
+                                longPollForTime()
+                            })
+                    }
+                    longPollForTime()
                 </script>
             </head>
-        </html>
+        </html> 
     `)
 });
 
